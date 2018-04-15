@@ -21,20 +21,24 @@ class Detalii extends Component {
                 if (data != null) {
                    var mydata = [];
                    var item = data.entry;
-                  var patienId =match.params.id;
+                   console.log("itttt",item);
+                   var patienId =match.params.id;
                    var itemdata = item.filter(function (item) { return item.resource.id });
                    for (var i = 0; i < itemdata.length; i++) {
-                       var idSplit = (itemdata[i].resource.subject.reference).split('/');
-                       if(patienId == idSplit[1])
+                       if(itemdata[i].resource.subject.reference!=null)
                        {
-                        mydata[i] = {};
-                        mydata[i].id = itemdata[i].resource.id;
-                        mydata[i].fullUrl = itemdata[i].fullUrl;
-                        mydata[i].period = itemdata[i].resource.period.start;
-                       // mydata[i].reason = itemdata[i].resource.reason[0].text;
-                        mydata[i].status = itemdata[i].resource.status;
-                        mydata[i].patient = itemdata[i].resource.subject.reference;
-                       }
+                            var idSplit = (itemdata[i].resource.subject.reference).split('/');
+                            if(patienId == idSplit[1])
+                            {
+                                mydata[i] = {};
+                                mydata[i].id = itemdata[i].resource.id;
+                                mydata[i].fullUrl = itemdata[i].fullUrl;
+                                mydata[i].period = (itemdata[i].resource.period!=undefined) ? itemdata[i].resource.period.start : "na";
+                            // mydata[i].reason = itemdata[i].resource.reason[0].text;
+                                mydata[i].status = itemdata[i].resource.status;
+                                mydata[i].patient = itemdata[i].resource.subject.reference;
+                            }
+                        }
                                               
                    }
                     that.setState({
@@ -53,27 +57,31 @@ class Detalii extends Component {
                   if (data != null) {
                     var mydata = [];
                     var item = data.entry;
+                    console.log("ulala",item);
                    var patienId =match.params.id;
                     var itemdata = item.filter(function (item) { return item.resource.id });
                     for (var i = 0; i < itemdata.length; i++) {
-                        var idSplit = (itemdata[i].resource.subject.reference).split('/');
-                        if(patienId == idSplit[1])
+                        if(itemdata[i].resource.subject=null)
                         {
-                            mydata[i] = {};
-                            mydata[i].id = itemdata[i].resource.id;
-                            mydata[i].intent = itemdata[i].resource.intent;
-                            mydata[i].activity = itemdata[i].resource.activity[0].detail.category.text;
-                            mydata[i].periodEnd = itemdata[i].resource.period.end;
-                            mydata[i].periodStart = itemdata[i].resource.period.start;
-                            mydata[i].status = itemdata[i].resource.status;
-                            mydata[i].patient = itemdata[i].resource.subject.reference;
-                        }
+                            var idSplit = (itemdata[i].resource.subject.reference).split('/');
+                            if(patienId == idSplit[1])
+                            {
+                                mydata[i] = {};
+                                mydata[i].id = itemdata[i].resource.id;
+                                mydata[i].intent = itemdata[i].resource.intent;
+                                mydata[i].activity = itemdata[i].resource.activity[0].detail.category.text;
+                                mydata[i].periodEnd = itemdata[i].resource.period.end;
+                                mydata[i].periodStart = (itemdata[i].resource.period.start!=undefined) ? itemdata[i].resource.period.start : "na";
+                                mydata[i].status = itemdata[i].resource.status;
+                                mydata[i].patient = itemdata[i].resource.subject.reference;
+                            }
                         else{
                             mydata[i] = {};
                             mydata[i].id = 0;
                             mydata[i].intent = "No data found!";
                             
                         }
+                    }
                     }
                       that.setState({
                           careplan: mydata
@@ -96,6 +104,8 @@ class Detalii extends Component {
                      var patienId =match.params.id;
                      var itemdata = item.filter(function (item) { return item.resource.id });
                      for (var i = 0; i < itemdata.length; i++) {
+                        if(itemdata[i].resource.participant[1]!=null)
+                        {
                         var idSplit = (itemdata[i].resource.participant[1].actor.reference).split('/');
                         if(patienId == idSplit[1])
                         {
@@ -115,6 +125,7 @@ class Detalii extends Component {
                             mydata[i].intent = "No data found!";
                             
                         }
+                    }
                      }
                       that.setState({
                         appointment: mydata
